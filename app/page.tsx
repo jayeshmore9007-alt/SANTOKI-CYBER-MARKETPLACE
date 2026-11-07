@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import type { FormEvent } from "react";
 
 type Product = { id:number; name:string; category:string; price:number; seller:string; emoji:string; condition:string; };
 const initial:Product[] = [
@@ -18,7 +19,7 @@ const rupees=(n:number)=>"₹"+n.toLocaleString("en-IN");
 export default function Home(){
  const [products,setProducts]=useState(initial),[category,setCategory]=useState("All"),[query,setQuery]=useState(""),[cart,setCart]=useState<number[]>([]),[saved,setSaved]=useState<number[]>([]),[sell,setSell]=useState(false),[name,setName]=useState(""),[price,setPrice]=useState(""),[seller,setSeller]=useState(""),[notice,setNotice]=useState("");
  const shown=useMemo(()=>products.filter(p=>(category==="All"||p.category===category)&&p.name.toLowerCase().includes(query.toLowerCase())),[products,category,query]);
- function publish(e:React.FormEvent){e.preventDefault();if(!name.trim()||!seller.trim()||Number(price)<=0)return;setProducts(p=>[{id:Math.max(...p.map(x=>x.id))+1,name,category:"Electronics Lab",price:Number(price),seller,emoji:"📦",condition:"Seller listed"},...p]);setName("");setPrice("");setSell(false);setNotice("Your demo listing has been added.");}
+ function publish(e:FormEvent){e.preventDefault();if(!name.trim()||!seller.trim()||Number(price)<=0)return;setProducts(p=>[{id:Math.max(...p.map(x=>x.id))+1,name,category:"Electronics Lab",price:Number(price),seller,emoji:"📦",condition:"Seller listed"},...p]);setName("");setPrice("");setSell(false);setNotice("Your demo listing has been added.");}
  return <main>
   <div className="topline">● SANTOKI MARKETPLACE <span>BUY SMART · SELL SECURE · SHOP RESPONSIBLY</span></div>
   <header className="nav wrap"><a className="brand" href="#"><b>S</b><span>SANTOKI<small>CYBER MARKETPLACE</small></span></a><div className="search"><span>⌕</span><input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search gadgets, tools and equipment..."/></div><button className="sell-btn" onClick={()=>setSell(true)}>＋ SELL PRODUCT</button><a className="cart" href="#cart">CART <b>{cart.length}</b></a></header>
